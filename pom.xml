@@ -129,30 +129,5 @@
 			<version>6.19.1</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.webrenderer</groupId>
-			<artifactId>webrenderer-swing</artifactId>
-			<version>6.3</version>
-		</dependency>
-		<dependency>
-			<groupId>com.webrenderer</groupId>
-			<artifactId>corecomponents-swing-linux64</artifactId>
-			<version>6.3</version>
-		</dependency>
-		<dependency>
-			<groupId>com.webrenderer</groupId>
-			<artifactId>webrenderer-swing-linux64</artifactId>
-			<version>6.3</version>
-		</dependency>
-		<dependency>
-			<groupId>com.webrenderer</groupId>
-			<artifactId>corecomponents-swing-windows64</artifactId>
-			<version>6.3</version>
-		</dependency>
-		<dependency>
-			<groupId>com.webrenderer</groupId>
-			<artifactId>webrenderer-swing-windows64</artifactId>
-			<version>6.3</version>
-		</dependency>
 	</dependencies>
 </project>
