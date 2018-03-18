@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="OFF">
+	<appenders>
+		<RollingFile name="RollingFile" fileName="${sys:catalina.home}/logs/ais.log"
+			filePattern="${sys:catalina.home}/logs/ais-%d{yyyy-MM-dd}.log.gz">
+			<PatternLayout pattern="%d{MM-dd HH:mm:ss} %-5level %logger{1} - %L - %msg%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="250 MB" />
+			</Policies>
+		</RollingFile>
+		<Console name="STDOUT" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{MM-dd HH:mm:ss} %-5level %logger{1} - %L - %msg%n" />
+		</Console>
+	</appenders>
+	<loggers>
+		<root level="info">
+			<appender-ref ref="STDOUT" />
+		</root>
+		<logger level="WARN" name="org.apache.http" />
+		<logger level="ERROR"
+			name="org.apache.http.client.protocol.ResponseProcessCookies" />
+		<logger level="WARN" name="com.teamdev.jexplorer" />
+	</loggers>
+</configuration>  

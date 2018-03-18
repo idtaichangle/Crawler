@@ -1,0 +1,27 @@
+######## refresh every 10 minute
+
+http://www.xicidaili.com/nn/
+#http://www.xicidaili.com/nt/  #transparent
+http://www.xicidaili.com/wt/
+#http://proxy.mimvp.com/free.php?proxy=in_tp  #closed
+#http://proxy.mimvp.com/free.php?proxy=in_hp #closed
+http://www.nianshao.me/
+http://www.ip181.com/
+http://www.iphai.com/
+http://www.iphai.com/free/ng
+http://www.iphai.com/free/np
+http://www.xsdaili.com/mfdl?type=1
+#http://www.xsdaili.com/mfdl?type=2 #transparent
+http://www.kuaidaili.com/proxylist/1/
+http://www.kuaidaili.com/free/
+#http://www.kuaidaili.com/free/intr/ #transparent
+http://www.kxdaili.com/dailiip.html
+http://www.kxdaili.com/dailiip/2/1.html
+http://www.xdaili.cn/ipagent/freeip/getFreeIps?page=1&rows=10
+
+######## refresh every 5 minute
+http://www.89ip.cn/tiqu.php?tqsl=30
+http://www.httpdaili.com/mfdl/
+#http://www.data5u.com/free/
+#http://www.data5u.com/free/gngn/index.shtml #Circular redirect
+#http://www.data5u.com/free/gnpt/index.shtml #transparent
