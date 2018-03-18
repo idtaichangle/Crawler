@@ -4,16 +4,11 @@ import java.util.TimerTask;
 
 import javax.swing.JComponent;
 
+import com.teamdev.jxbrowser.chromium.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.cvnavi.browser.AbstractBrowser;
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.BrowserContext;
-import com.teamdev.jxbrowser.chromium.BrowserContextParams;
-import com.teamdev.jxbrowser.chromium.BrowserPreferences;
-import com.teamdev.jxbrowser.chromium.LoadURLParams;
-import com.teamdev.jxbrowser.chromium.StorageType;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
 public class JxBrowser extends AbstractBrowser {
@@ -56,32 +51,41 @@ public class JxBrowser extends AbstractBrowser {
 	}
 
 	public String loadURL(String url, String proxy) {
-		return visitePage(HTTP_GET, url, null, 10000, new PageListener());
+		return visitePage(HTTP_GET, url, null, proxy,10000, new PageListener());
 	}
 
 	public String getScode(String proxy) {
 		String url = "http://www.shipxy.com";
-		return visitePage(HTTP_GET, url, null, 40000, new ScodeListener());
+		return visitePage(HTTP_GET, url, null, proxy,40000, new ScodeListener());
 	}
 
 	public String loginMarinecircle(String proxy) {
 		String url = "http://www.marinecircle.com/home.jsp?isDemoUser=true&from=home#";
-		return visitePage(HTTP_GET, url, null, 40000, new MarinecircleLogin());
+		return visitePage(HTTP_GET, url, null, proxy,40000, new MarinecircleLogin());
 	}
 
 	public String loginShipxy(String userName, String password,String proxy) {
 		String url = "http://www.shipxy.com/Home/Login";
 		String params = "Model.UserName=" + userName + "&Model.Password=" + password;
-		return visitePage(HTTP_POST, url, params, 40000, new LoginShipxyListener());
+		return visitePage(HTTP_POST, url, params, proxy,40000, new LoginShipxyListener());
 	}
 
-	String visitePage(int getOrPost, String url, String params, int timeOut, ListenerAdapter listener) {
+	String visitePage(int getOrPost, String url, String params, String proxy,int timeOut, ListenerAdapter listener) {
 		adapter.setListener(listener);
 		LoadURLParams lup = null;
 		if (getOrPost == HTTP_GET) {
 			lup = new LoadURLParams(url);
 		} else {
 			lup = new LoadURLParams(url, params);
+		}
+
+		ProxySerivce  proxyService = browserContext.getProxyService();
+		if(proxy==null || proxy.isEmpty()){
+			proxyService.setProxyConfig(new DirectProxyConfig());
+		}else{
+			String proxyRules = "http=foo:80;https=foo:80;ftp=foo:80;socks=foo:80";
+			proxyRules=proxyRules.replaceAll("foo:80",proxy);
+			proxyService.setProxyConfig(new CustomProxyConfig(proxyRules));
 		}
 		browser.loadURL(lup);
 		synchronized (listener.lock) {
@@ -97,7 +101,7 @@ public class JxBrowser extends AbstractBrowser {
 		browser.getCacheStorage().clearCache();
 		 
 		new java.util.Timer().schedule(new TimerTask() {
-			
+
 			@Override
 			public void run() {
 				browser.loadHTML("<html></html>");
