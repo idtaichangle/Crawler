@@ -52,7 +52,10 @@ public class ProxyDao {
 		try {
 			Connection con = DBConnection.get();
 			if (con != null) {
-				CallableStatement stmt = con.prepareCall("{CALL  " + procedure + "(?)}");
+				Collection<HttpHost> inDb=  loadAliveProxy();
+				c.removeAll(inDb);
+
+				PreparedStatement stmt = con.prepareStatement("insert into alive_proxy(proxy) values(?)");
 				for (HttpHost proxy : c) {
 					stmt.setString(1, proxy.toString());
 					stmt.addBatch();

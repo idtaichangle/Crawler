@@ -1,5 +1,6 @@
 package com.cvnavi.db;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -23,6 +24,9 @@ public class DBConnection{
 		}
 		try {
 			if (con == null || con.isClosed()) {
+				if(Config.dbDriver.contains("derby")){
+					System.setProperty("derby.system.home", System.getProperty("user.home")+ File.separator+".derby");
+				}
 				Class.forName(Config.dbDriver);
 				con = DriverManager.getConnection(Config.dbUrl, Config.dbUser, Config.dbPassword);
 				ServletContextCleaner.registeCloseable(con);
