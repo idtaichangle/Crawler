@@ -4,7 +4,7 @@ import org.apache.http.HttpHost;
 import org.apache.logging.log4j.Level;
 
 import com.cvnavi.browser.BrowserServiceInvoker;
-import com.cvnavi.db.ProxyDao;
+import com.cvnavi.db.dao.ProxyDaoService;
 import com.cvnavi.util.Header;
 import com.cvnavi.util.HttpUtil;
 
@@ -41,7 +41,7 @@ public abstract class Crawler {
 	}
 
 	public HttpHost getProxy() {
-		return ProxyDao.getRandomProxy();
+		return ProxyDaoService.getRandomProxy();
 	}
 	
 	public Header getHeader(){

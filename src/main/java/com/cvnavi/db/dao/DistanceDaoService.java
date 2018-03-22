@@ -1,22 +1,23 @@
-package com.cvnavi.distance;
+package com.cvnavi.db.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import com.cvnavi.distance.PortDistance;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.cvnavi.db.DBConnection;
 
-public class DistanceDao {
-	static Logger log = LogManager.getLogger(DistanceDao.class);
+public class DistanceDaoService {
+	static Logger log = LogManager.getLogger(DistanceDaoService.class);
 
 	public static PortDistance getLast() {
 		PortDistance pd = new PortDistance();
 		try {
-			Connection con = DBConnection.get();
+			Connection con = DBConnection.getInstance().get();
 			if (con != null) {
 				Statement st = con.createStatement();
 				ResultSet rs = st.executeQuery("SELECT * FROM port_distance order by id desc limit 1");
@@ -37,7 +38,7 @@ public class DistanceDao {
 
 	public static void save(PortDistance pd) {
 		try {
-			Connection con = DBConnection.get();
+			Connection con = DBConnection.getInstance().get();
 			if (con != null) {
 
 				PreparedStatement ps = con

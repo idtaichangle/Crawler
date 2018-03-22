@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import java.io.*;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,10 +20,23 @@ public class DbChecker implements ServletContextListener{
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        if(Config.dbDriver.contains("derby")){
+
+
+        if(DBConnection.getInstance() instanceof MysqlConnection){
+            ScriptRunner runner = new ScriptRunner(DBConnection.getInstance().get(), false, false);
+            byte[] b=ResourceReader.readFile("/create_table_mysql.sql");
+            String s=new String(b);
+            try {
+                runner.runScript(new BufferedReader(new StringReader(s)));
+            } catch (IOException ex) {
+                log.error(ex);
+            } catch (SQLException ex) {
+                log.error(ex);
+            }
+        }else if(DBConnection.getInstance() instanceof DerbyConnection){
             try {
                 if(!existTable("alive_proxy")){
-                    Statement st=DBConnection.get().createStatement();
+                    Statement st=DBConnection.getInstance().get().createStatement();
                     String sql= new String(ResourceReader.readFile("/create_table_derby.sql"));
                     st.execute(sql);
                     st.close();
@@ -31,11 +45,12 @@ public class DbChecker implements ServletContextListener{
                 log.error(ex);
             }
         }
+
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        if(Config.dbDriver.contains("derby")){
+        if(DBConnection.getInstance() instanceof DerbyConnection){
             try {
                 DriverManager.getConnection(Config.dbUrl+";shutdown=true");
             } catch (SQLException e) {
@@ -45,7 +60,7 @@ public class DbChecker implements ServletContextListener{
     }
 
     private static boolean existTable(String name) throws Exception{
-        ResultSet rs=DBConnection.get().getMetaData().getTables(null,null,null,null);
+        ResultSet rs=DBConnection.getInstance().get().getMetaData().getTables(null,null,null,null);
         while(rs.next()){
             String s=rs.getString("TABLE_NAME");
             if(s .equalsIgnoreCase(name)){

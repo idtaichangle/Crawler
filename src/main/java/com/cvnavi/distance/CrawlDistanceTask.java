@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.annotation.WebListener;
 
+import com.cvnavi.db.dao.DistanceDaoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,7 +39,7 @@ public class CrawlDistanceTask extends AbstractDailyTask {
 				setTodayWorkComplete(true);
 				return;
 			}
-			PortDistance pd = DistanceDao.getLast();
+			PortDistance pd = DistanceDaoService.getLast();
 			setNext(pd.fromPort, pd.toPort);
 		}
 		lastRun=System.currentTimeMillis();
@@ -57,7 +58,7 @@ public class CrawlDistanceTask extends AbstractDailyTask {
 			pd2.fromPort = fromPort;
 			pd2.toPort = toPort;
 			pd2.distance = f;
-			DistanceDao.save(pd2);
+			DistanceDaoService.save(pd2);
 			setNext(fromPort, toPort);
 
 			log.info(fromPort + "," + toPort + ":" + distance);

@@ -2,6 +2,7 @@ package com.cvnavi.ship;
 
 import java.util.List;
 
+import com.cvnavi.db.dao.ShipDaoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,7 +31,7 @@ public class ShipxyShipInfo extends AbstractDailyTask {
 
 	@Override
 	public void doTask() {
-		List<Ship> list = ShipDao.loadShips();
+		List<Ship> list = ShipDaoService.loadShips();
 		String mmsi = "";
 		for (Ship s : list) {
 			mmsi += s.mmsi + ",";
@@ -59,7 +60,7 @@ public class ShipxyShipInfo extends AbstractDailyTask {
 					ship.typeStr=s0.ShipTypeStr;
 					ship.crawled=1;
 				}
-				ShipDao.saveShips(list);
+				ShipDaoService.saveShips(list);
 			}else{
 				failCount++;
 				if(failCount>5){

@@ -7,10 +7,10 @@ import java.util.regex.Pattern;
 
 import javax.servlet.annotation.WebListener;
 
+import com.cvnavi.db.dao.ProxyDaoService;
 import org.apache.http.HttpHost;
 
 import com.cvnavi.browser.BrowserServiceInvoker;
-import com.cvnavi.db.ProxyDao;
 import com.cvnavi.task.Schedule;
 import com.cvnavi.util.ResourceReader;
 
@@ -37,7 +37,7 @@ public class BrowserCrawler extends AbstractProxyCrawler {
 	}
 
 	public String getUrlContent(String url) {
-		HttpHost proxy=ProxyDao.getRandomProxy();
+		HttpHost proxy= ProxyDaoService.getRandomProxy();
 		String content=BrowserServiceInvoker.getPage(url,proxy);
 		return content;
 	}

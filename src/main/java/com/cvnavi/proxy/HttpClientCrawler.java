@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 
 import javax.servlet.annotation.WebListener;
 
+import com.cvnavi.db.dao.ProxyDaoService;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
@@ -20,7 +21,6 @@ import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.Level;
 
 import com.cvnavi.base.ServletContextCleaner;
-import com.cvnavi.db.ProxyDao;
 import com.cvnavi.task.Schedule;
 import com.cvnavi.util.Header;
 import com.cvnavi.util.HttpUtil;
@@ -50,7 +50,7 @@ public class HttpClientCrawler extends AbstractProxyCrawler {
 	public String getUrlContent(String url) {
 		HashMap<String, String> header = Header.createRandom();
 		header.put("Upgrade-Insecure-Requests", "1");
-		String s = sendHttp(new HttpGet(url), header, ProxyDao.getRandomProxy(), Level.DEBUG);
+		String s = sendHttp(new HttpGet(url), header, ProxyDaoService.getRandomProxy(), Level.DEBUG);
 		if (s.length() == 0) {
 			s = sendHttp(new HttpGet(url), header, null, Level.DEBUG);
 		}

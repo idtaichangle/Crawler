@@ -1,6 +1,5 @@
-package com.cvnavi.db;
+package com.cvnavi.db.dao;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +10,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import com.cvnavi.db.DBConnection;
 import org.apache.http.HttpHost;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,8 +21,8 @@ import org.apache.logging.log4j.Logger;
  * @author lixy
  *
  */
-public class ProxyDao {
-	static Logger log = LogManager.getLogger(ProxyDao.class);
+public class ProxyDaoService {
+	static Logger log = LogManager.getLogger(ProxyDaoService.class);
 
 	private static Set<HttpHost> aliveProxies = Collections.synchronizedSet(new HashSet<HttpHost>());
 
@@ -42,15 +42,11 @@ public class ProxyDao {
 	}
 
 	public static void saveAliveProxy(Collection<HttpHost> c) {
-		saveProxy(c, "insert_alive_proxy_if_not_exist");
-	}
-
-	private static synchronized void saveProxy(Collection<HttpHost> c, String procedure) {
 		if (c.size() == 0) {
 			return;
 		}
 		try {
-			Connection con = DBConnection.get();
+			Connection con = DBConnection.getInstance().get();
 			if (con != null) {
 				Collection<HttpHost> inDb=  loadAliveProxy();
 				c.removeAll(inDb);
@@ -73,7 +69,7 @@ public class ProxyDao {
 			return;
 		}
 		try {
-			Connection con = DBConnection.get();
+			Connection con = DBConnection.getInstance().get();
 			if (con != null) {
 				PreparedStatement ps = con.prepareStatement("delete  from alive_proxy where proxy=?");
 				for (HttpHost proxy : proxies) {
@@ -91,7 +87,7 @@ public class ProxyDao {
 	public static Collection<HttpHost> loadAliveProxy() {
 		Set<HttpHost> set = Collections.synchronizedSet(new HashSet<HttpHost>());
 		try {
-			Connection con = DBConnection.get();
+			Connection con = DBConnection.getInstance().get();
 			if (con != null) {
 				Statement st = con.createStatement();
 				ResultSet rs = st.executeQuery("select * from alive_proxy");

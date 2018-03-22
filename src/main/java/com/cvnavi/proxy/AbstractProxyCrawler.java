@@ -7,11 +7,11 @@ import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.cvnavi.db.dao.ProxyDaoService;
 import org.apache.http.HttpHost;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.cvnavi.db.ProxyDao;
 import com.cvnavi.task.AbstractDailyTask;
 import com.cvnavi.util.DateUtil;
 
@@ -62,8 +62,8 @@ public abstract class AbstractProxyCrawler extends AbstractDailyTask {
 			log.info("Found proxy:" + newSet.size());
 			HashSet<HttpHost> tested = ProxyTester.testProxy(newSet);
 			if (tested.size() > 0) {
-				ProxyDao.saveAliveProxy(tested);
-				Collection<HttpHost> aliveProxies = ProxyDao.getAliveProxies();
+				ProxyDaoService.saveAliveProxy(tested);
+				Collection<HttpHost> aliveProxies = ProxyDaoService.getAliveProxies();
 				aliveProxies.addAll(tested);
 				log.info("Crawle complete.New proxy count:" + tested.size() + ",total proxy count:"
 						+ aliveProxies.size());

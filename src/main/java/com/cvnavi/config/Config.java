@@ -10,7 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.cvnavi.base.KeyValue;
-import com.cvnavi.db.ProxyDao;
+import com.cvnavi.db.dao.ProxyDaoService;
 
 /**
  * @author lixy
@@ -56,7 +56,7 @@ public class Config {
 	static {
 		Properties p = new Properties();
 		try {
-			InputStream is = ProxyDao.class.getResourceAsStream("/config.properties");
+			InputStream is = ProxyDaoService.class.getResourceAsStream("/config.properties");
 			p.load(is);
 
 			dbDriver = p.getProperty("db.driver");

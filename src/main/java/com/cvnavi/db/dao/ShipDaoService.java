@@ -1,4 +1,4 @@
-package com.cvnavi.ship;
+package com.cvnavi.db.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import com.cvnavi.ship.Ship;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,15 +21,15 @@ import com.cvnavi.db.DBConnection;
  * @author lixy
  *
  */
-public class ShipDao {
-	static Logger log = LogManager.getLogger(ShipDao.class);
+public class ShipDaoService {
+	static Logger log = LogManager.getLogger(ShipDaoService.class);
 
 	public synchronized static void saveShips(Collection<Ship> c) {
 		if (c.size() == 0) {
 			return;
 		}
 		try {
-			Connection con = DBConnection.get();
+			Connection con = DBConnection.getInstance().get();
 			if (con != null) {
 				List<Ship> list1=new ArrayList<>();
 				List<Ship> list2=new ArrayList<>();
@@ -81,7 +82,7 @@ public class ShipDao {
 	public static List<Ship> loadShips() {
 		List<Ship> list = Collections.synchronizedList(new ArrayList<Ship>());
 		try {
-			Connection con = DBConnection.get();
+			Connection con = DBConnection.getInstance().get();
 			if (con != null) {
 				Statement st = con.createStatement();
 				ResultSet rs = st.executeQuery("select id,mmsi from shipxy_ship where crawled=0 order by id limit 90");

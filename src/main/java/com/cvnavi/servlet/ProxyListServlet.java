@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cvnavi.db.dao.ProxyDaoService;
 import org.apache.http.HttpHost;
 
-import com.cvnavi.db.ProxyDao;
 
 /**
  * Servlet implementation class ProxyListServlet
@@ -25,7 +25,7 @@ public class ProxyListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Collection<HttpHost> all = ProxyDao.loadAliveProxy();
+		Collection<HttpHost> all = ProxyDaoService.loadAliveProxy();
 		StringBuilder sb=new StringBuilder();
 		sb.append("<!Doctype html><html><head><meta http-equiv=Content-Type content=\"text/html;charset=utf-8\"></head><body>");
 		sb.append("total count:"+all.size()).append("<br/>");

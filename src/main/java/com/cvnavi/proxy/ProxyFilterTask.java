@@ -9,7 +9,7 @@ import org.apache.http.HttpHost;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.cvnavi.db.ProxyDao;
+import com.cvnavi.db.dao.ProxyDaoService;
 import com.cvnavi.task.AbstractDailyTask;
 import com.cvnavi.task.Schedule;
 
@@ -33,11 +33,11 @@ public class ProxyFilterTask extends AbstractDailyTask {
 	public void doTask() {
 		log.info("Start test alive proxy.");
 		try {
-			Collection<HttpHost> all = ProxyDao.loadAliveProxy();
+			Collection<HttpHost> all = ProxyDaoService.loadAliveProxy();
 			Collection<HttpHost> tested = ProxyTester.testProxy(all);
 			ArrayList<HttpHost> toBeRemove = new ArrayList<>(all);
 			toBeRemove.removeAll(tested);
-			ProxyDao.deleteAliveProxy(toBeRemove);
+			ProxyDaoService.deleteAliveProxy(toBeRemove);
 			all.removeAll(toBeRemove);	
 			log.info("Test complete. Remove " + toBeRemove.size() + " proxy." + all.size() + " proxy remain.");
 		} catch (Exception ex) {

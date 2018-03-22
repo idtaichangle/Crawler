@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 
 import javax.net.ssl.SSLContext;
 
+import com.cvnavi.db.dao.ProxyDaoService;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
@@ -50,7 +51,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.cvnavi.base.ServletContextCleaner;
-import com.cvnavi.db.ProxyDao;
 
 public class HttpUtil {
 
@@ -94,7 +94,7 @@ public class HttpUtil {
 
 		String result = "";
 		if (proxy == RANDOM_PROXY) {
-			result = doHttp(httpGet, header, cookie, ProxyDao.getRandomProxy(), 2000, level);
+			result = doHttp(httpGet, header, cookie, ProxyDaoService.getRandomProxy(), 2000, level);
 			if (result.length() == 0) {
 				result = doHttp(httpGet, header, cookie, null, 2000, level);
 			}
@@ -161,7 +161,7 @@ public class HttpUtil {
 		}
 		String result = "";
 		if (proxy == RANDOM_PROXY) {
-			result = doHttp(httpPost, header, cookie, ProxyDao.getRandomProxy(), timeout, level);
+			result = doHttp(httpPost, header, cookie, ProxyDaoService.getRandomProxy(), timeout, level);
 			if (result.length() == 0) {
 				result = doHttp(httpPost, header, cookie, null, timeout, level);
 			}
@@ -186,7 +186,7 @@ public class HttpUtil {
 
 		String result = "";
 		if (proxy == RANDOM_PROXY) {
-			result = doHttp(httpPost, header, cookie, ProxyDao.getRandomProxy(), timeout, level);
+			result = doHttp(httpPost, header, cookie, ProxyDaoService.getRandomProxy(), timeout, level);
 			if (result.length() == 0) {
 				result = doHttp(httpPost, header, cookie, null, timeout, level);
 			}

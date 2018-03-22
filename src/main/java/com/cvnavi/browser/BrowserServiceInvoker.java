@@ -8,12 +8,12 @@ import java.net.URLEncoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.cvnavi.db.dao.ProxyDaoService;
 import org.apache.http.HttpHost;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.cvnavi.base.ServletContextCleaner;
-import com.cvnavi.db.ProxyDao;
 import com.cvnavi.task.AbstractDailyTask;
 import com.cvnavi.task.Schedule;
 import com.cvnavi.util.CmdExecutor;
@@ -114,7 +114,7 @@ public class BrowserServiceInvoker  extends AbstractDailyTask implements AutoClo
 	public static String getScode() {
 		try {
 			String cmd = "cmd=" + BrowserService.CMD_GET_SCODE;
-			HttpHost proxy = ProxyDao.getRandomProxy();
+			HttpHost proxy = ProxyDaoService.getRandomProxy();
 			if (proxy != null) {
 				cmd += "&proxy=" + URLEncoder.encode(proxy.getHostName() + ":" + proxy.getPort(), "UTF-8");
 			}
@@ -128,7 +128,7 @@ public class BrowserServiceInvoker  extends AbstractDailyTask implements AutoClo
 	public static String loginMarinecircle() {
 		try {
 			String cmd = "cmd=" + BrowserService.CMD_LOGIN_MARINE_CIRCLE;
-			HttpHost proxy = ProxyDao.getRandomProxy();
+			HttpHost proxy = ProxyDaoService.getRandomProxy();
 			if (proxy != null) {
 				cmd += "&proxy=" + URLEncoder.encode(proxy.getHostName() + ":" + proxy.getPort(), "UTF-8");
 			}
@@ -142,7 +142,7 @@ public class BrowserServiceInvoker  extends AbstractDailyTask implements AutoClo
 	public static String loginShipxy(String userName, String password) {
 		try {
 			String cmd = "cmd=" + BrowserService.CMD_LOGIN_SHIPXY + "&userName=" + userName + "&password=" + password;
-			HttpHost proxy = ProxyDao.getRandomProxy();
+			HttpHost proxy = ProxyDaoService.getRandomProxy();
 			if (proxy != null) {
 				cmd += "&proxy=" + URLEncoder.encode(proxy.getHostName() + ":" + proxy.getPort(), "UTF-8");
 			}

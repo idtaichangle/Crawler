@@ -10,32 +10,22 @@ import org.apache.logging.log4j.Logger;
 import com.cvnavi.base.ServletContextCleaner;
 import com.cvnavi.config.Config;
 
-public class DBConnection{
-	static Logger log=LogManager.getLogger(DBConnection.class);
-	private static Connection con;
+public abstract class DBConnection{
 
-	/**
-	 * 获取数据库连接。使用完毕后，可以不用关闭连接。web app销毁时会关闭连接。
-	 * @return
-	 */
-	public static Connection get() {
-		if(!ServletContextCleaner.contextValid){
-			return null;
-		}
-		try {
-			if (con == null || con.isClosed()) {
-				if(Config.dbDriver.contains("derby")){
-					System.setProperty("derby.system.home", System.getProperty("user.home")+ File.separator+".derby");
-				}
-				Class.forName(Config.dbDriver);
-				con = DriverManager.getConnection(Config.dbUrl, Config.dbUser, Config.dbPassword);
-				ServletContextCleaner.registeCloseable(con);
+	private static DBConnection inst;
+
+	public static DBConnection getInstance(){
+		if(inst==null){
+			if (Config.dbDriver.contains("mysql")){
+				inst= new MysqlConnection();
+			}else if (Config.dbDriver.contains("derby")){
+				inst= new DerbyConnection();
 			}
-		} catch (Exception e) {
-			log.error(e);
 		}
 
-		return con;
+		return inst;
 	}
+
+	public abstract Connection get();
 
 }
