@@ -19,9 +19,6 @@ public class DerbyConnection extends DBConnection {
      */
     @Override
     public Connection get() {
-        if(!ServletContextCleaner.contextValid){
-            return null;
-        }
         try {
             if (con == null || con.isClosed()) {
                 System.setProperty("derby.system.home", System.getProperty("user.home")+ File.separator+".derby");

@@ -23,9 +23,6 @@ public class MysqlConnection extends DBConnection{
      */
     @Override
     public Connection get() {
-        if(!ServletContextCleaner.contextValid){
-            return null;
-        }
         try {
             if (con == null || con.isClosed()) {
                 Class.forName(Config.dbDriver);

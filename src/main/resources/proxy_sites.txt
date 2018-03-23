@@ -5,7 +5,7 @@ http://www.xicidaili.com/nn/
 http://www.xicidaili.com/wt/
 #http://proxy.mimvp.com/free.php?proxy=in_tp  #closed
 #http://proxy.mimvp.com/free.php?proxy=in_hp #closed
-http://www.nianshao.me/
+#http://www.nianshao.me/
 http://www.ip181.com/
 http://www.iphai.com/
 http://www.iphai.com/free/ng
