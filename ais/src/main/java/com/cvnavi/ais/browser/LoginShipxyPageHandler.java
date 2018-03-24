@@ -5,18 +5,23 @@ import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.cvnavi.browser.DefaultPageHandler;
 import com.cvnavi.browser.ListenerAdapter;
 import com.teamdev.jxbrowser.chromium.BeforeURLRequestParams;
 import com.teamdev.jxbrowser.chromium.Cookie;
 import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 
-public class LoginShipxyPageHandler extends ListenerAdapter {
+public class LoginShipxyPageHandler extends DefaultPageHandler {
 
 	public static final String KEY_SESSION_ID = "ASP.NET_SessionId";
 	public static final String KEY_USER_AUTH = ".UserAuth2";
 	String sessionId = null;
 	String userAuth2 = null;
-	String result="";
+
+
+	public LoginShipxyPageHandler(int timeout) {
+		super(timeout);
+	}
 
 	@Override
 	public void onFinishLoadingFrame(FinishLoadingEvent event) {
@@ -38,7 +43,7 @@ public class LoginShipxyPageHandler extends ListenerAdapter {
 				}
 			}
 
-		}, 100);
+		}, 200);
 
 	}
 

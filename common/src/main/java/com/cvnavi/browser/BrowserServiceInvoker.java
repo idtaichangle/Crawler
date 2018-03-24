@@ -142,11 +142,11 @@ public class BrowserServiceInvoker  extends AbstractDailyTask implements AutoClo
 //	}
 
 	public static String visitePage(String url, String method,HttpHost proxy) {
-		return visitePage(url,method,proxy,null,10000,null);
+		return visitePage(url,method,proxy,null,20000,null);
 	}
 
 	public static String visitePage(String url, String method,HttpHost proxy,HashMap<String,Object> params) {
-		return visitePage(url,method,proxy,params,10000,null);
+		return visitePage(url,method,proxy,params,20000,null);
 	}
 
 	public static String visitePage(String url, String method,HttpHost proxy,HashMap<String,Object> params,int timeout,Class<?> listener) {

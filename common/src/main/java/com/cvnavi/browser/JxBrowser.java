@@ -1,5 +1,6 @@
 package com.cvnavi.browser;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimerTask;
@@ -16,7 +17,7 @@ public class JxBrowser  {
 	static Logger log = LogManager.getLogger(JxBrowser.class);
 	static Browser browser;
 	static BrowserContext browserContext;
-	static ListenerAdapter adapter = new ListenerAdapter(){
+	static ListenerAdapter adapter = new ListenerAdapter(20000){
 
 		@Override
 		public String getResult() {
@@ -60,23 +61,27 @@ public class JxBrowser  {
 		String url=map.get("url").toString();
 		String method=map.get("method").toString();
 		String proxy=map.get("proxy")==null?null:map.get("proxy").toString();
-		int timeout=map.get("timeout")==null?10000:Integer.parseInt(map.get("timeout").toString());
+		int timeout=map.get("timeout")==null?20000:Integer.parseInt(map.get("timeout").toString());
 		HashMap<String,String>params= (HashMap<String, String>) map.get("params");
 
 
-		ListenerAdapter listener=new DefaultPageHandler();
+		ListenerAdapter listener=new DefaultPageHandler(20000);
 		String listenerClass=DefaultPageHandler.class.getName();
 		if(map.get("listener")!=null){
 			listenerClass=map.get("listener").toString();
 		}
 		try {
 			Class<? extends ListenerAdapter> clazz=(Class<? extends ListenerAdapter>) Class.forName(listenerClass);
-			listener=clazz.newInstance();
+			listener=clazz.getConstructor(int.class).newInstance(timeout);
 		} catch (ClassNotFoundException e) {
 			log.error(e);
 		} catch (InstantiationException e) {
 			log.error(e);
 		} catch (IllegalAccessException e) {
+			log.error(e);
+		} catch (NoSuchMethodException e) {
+			log.error(e);
+		} catch (InvocationTargetException e) {
 			log.error(e);
 		}
 		return visitePage(url,method,params,proxy,timeout,listener);
@@ -116,18 +121,12 @@ public class JxBrowser  {
 				log.error(e);
 			}
 		}
-
 		adapter.setListener(null);
 		browser.stop();
 		browser.getCacheStorage().clearCache();
-		 
-		new java.util.Timer().schedule(new TimerTask() {
 
-			@Override
-			public void run() {
-				browser.loadHTML("<html></html>");
-			}
-		}, 100);
+		browser.loadHTML("<html></html>");
+
 		return listener.getResult();
 	}
 

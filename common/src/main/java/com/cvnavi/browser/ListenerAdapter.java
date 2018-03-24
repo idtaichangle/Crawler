@@ -33,6 +33,9 @@ public abstract  class ListenerAdapter implements LoadListener, NetworkDelegate 
 
 	private ListenerAdapter listener;
 
+	public ListenerAdapter(int timeout) {
+	}
+
 
 	public void setListener(ListenerAdapter listener) {
 		this.listener = listener;
@@ -88,6 +91,9 @@ public abstract  class ListenerAdapter implements LoadListener, NetworkDelegate 
 
 	@Override
 	public void onCompleted(RequestCompletedParams arg0) {
+		if (listener != null) {
+			listener.onCompleted(arg0);
+		}
 	}
 
 	@Override
@@ -112,10 +118,16 @@ public abstract  class ListenerAdapter implements LoadListener, NetworkDelegate 
 
 	@Override
 	public void onDocumentLoadedInFrame(FrameLoadEvent arg0) {
+		if (listener != null) {
+			listener.onDocumentLoadedInFrame(arg0);
+		}
 	}
 
 	@Override
 	public void onDocumentLoadedInMainFrame(LoadEvent arg0) {
+		if (listener != null) {
+			listener.onDocumentLoadedInMainFrame(arg0);
+		}
 	}
 
 	@Override

@@ -3,6 +3,10 @@ package com.cvnavi.browser;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.RequestCompletedParams;
+import com.teamdev.jxbrowser.chromium.events.FrameLoadEvent;
+import com.teamdev.jxbrowser.chromium.events.LoadEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,21 +20,100 @@ import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 public class DefaultPageHandler extends ListenerAdapter {
 
 	static Logger log = LogManager.getLogger(DefaultPageHandler.class);
-	String result="";
+
+	protected Browser browser;
+
+	protected String result="";
+
+	protected long waitUntil=0;
+
+	protected Timer timer;
+
+	public DefaultPageHandler(int timeout) {
+		super(timeout);
+		waitUntil=System.currentTimeMillis()+timeout;
+	}
+
 	@Override
 	public void onFinishLoadingFrame(FinishLoadingEvent event) {
-		new Timer().schedule(new TimerTask() {
-			public void run() {
-				try {
-					result = event.getBrowser().getHTML();
-					synchronized (lock) {
-						lock.notifyAll();
-					}
-				} catch (Exception ex) {
-					log.error(ex);
-				}
+		if(System.currentTimeMillis()<waitUntil){
+			if(timer!=null){
+				timer.cancel();
 			}
-		}, 100);
+			timer=new Timer();
+			timer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					browser=event.getBrowser()==null?browser:event.getBrowser();
+					loadComplete(browser);
+				}
+			}, 3000);
+		}
+	}
+
+	@Override
+	public void onDocumentLoadedInMainFrame(LoadEvent event) {
+		if(System.currentTimeMillis()<waitUntil){
+			if(timer!=null){
+				timer.cancel();
+			}
+			timer=new Timer();
+			timer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					browser=event.getBrowser()==null?browser:event.getBrowser();
+					loadComplete(browser);
+				}
+			}, 3000);
+		}
+	}
+
+	@Override
+	public void onDocumentLoadedInFrame(FrameLoadEvent event) {
+		if(System.currentTimeMillis()<waitUntil){
+			if(timer!=null){
+				timer.cancel();
+			}
+			timer=new Timer();
+			timer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					browser=event.getBrowser()==null?browser:event.getBrowser();
+					loadComplete(browser);
+				}
+			}, 3000);
+		}
+	}
+
+
+	@Override
+	public void onCompleted(RequestCompletedParams params) {
+		if(System.currentTimeMillis()<waitUntil){
+			if(timer!=null){
+				timer.cancel();
+			}
+			timer=new Timer();
+			timer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					browser=params.getBrowser()==null?browser:params.getBrowser();
+					loadComplete(browser);
+				}
+			}, 3000);
+		}
+	}
+
+	public void loadComplete(Browser browser){
+		try {
+			if(browser!=null){
+				result = browser.getHTML();
+			}
+			synchronized (lock) {
+				lock.notifyAll();
+			}
+		} catch (Exception ex) {
+			log.error(ex);
+		}
 	}
 
 	@Override
