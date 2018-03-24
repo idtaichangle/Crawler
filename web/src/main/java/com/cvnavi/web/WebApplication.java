@@ -28,6 +28,7 @@ public class WebApplication implements ServletContextListener{
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         DbChecker.checkDatabase();
         WebBackgroundTaskScheduler.getInstance().startScheduler();
+        ProxyDaoService.getInstance().loadAliveProxy();
         ProxyProvider.register(ProxyDaoService.getInstance());
         contextValid = true;
         log.info("============"+servletContextEvent.getServletContext().getContextPath()+" started."+"============");
