@@ -1,0 +1,8 @@
+http://ip.zdaye.com/?port=8080
+http://ip.zdaye.com/?port=3128
+http://ip.zdaye.com/?port=1080
+http://ip.zdaye.com/?port=8081
+http://www.data5u.com/
+http://www.data5u.com/free/gngn/index.shtml
+http://www.goubanjia.com/
+#http://www.goubanjia.com/free/gnpt/index.shtml  #//透明代理
