@@ -124,10 +124,13 @@ public class JxBrowser  {
 		adapter.setListener(null);
 		browser.stop();
 		browser.getCacheStorage().clearCache();
-
+		String result=listener.getResult();
+		if(result!=null && result.trim().isEmpty()){
+			result=browser.getHTML();
+		}
 		browser.loadHTML("<html></html>");
 
-		return listener.getResult();
+		return result;
 	}
 
 }

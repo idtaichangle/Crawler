@@ -62,7 +62,7 @@ public class ShipxyHeartbeat extends AbstractDailyTask {
 		params.put("userName",kv.getKey());
 		params.put("password",kv.getValue());
 
-		String s = BrowserServiceInvoker.visitePage(url, "post",ProxyProvider.getRandomProxy(),params,10000,LoginShipxyPageHandler.class);
+		String s = BrowserServiceInvoker.visitePage(url, "post",ProxyProvider.getRandomProxy(),params,15000,LoginShipxyPageHandler.class);
 		if (s.contains("NET_SessionId=")) {
 			HashMap<String, String> map=new HashMap<>();
 			for(String line:s.split("\n")){

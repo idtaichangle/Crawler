@@ -28,6 +28,7 @@ public class DefaultPageHandler extends ListenerAdapter {
 	protected long waitUntil=0;
 
 	protected Timer timer;
+	protected boolean loadComplete=false;
 
 	public DefaultPageHandler(int timeout) {
 		super(timeout);
@@ -47,7 +48,7 @@ public class DefaultPageHandler extends ListenerAdapter {
 					browser=event.getBrowser()==null?browser:event.getBrowser();
 					loadComplete(browser);
 				}
-			}, 3000);
+			}, getResponseDelay());
 		}
 	}
 
@@ -64,7 +65,7 @@ public class DefaultPageHandler extends ListenerAdapter {
 					browser=event.getBrowser()==null?browser:event.getBrowser();
 					loadComplete(browser);
 				}
-			}, 3000);
+			}, getResponseDelay());
 		}
 	}
 
@@ -81,7 +82,7 @@ public class DefaultPageHandler extends ListenerAdapter {
 					browser=event.getBrowser()==null?browser:event.getBrowser();
 					loadComplete(browser);
 				}
-			}, 3000);
+			}, getResponseDelay());
 		}
 	}
 
@@ -99,21 +100,28 @@ public class DefaultPageHandler extends ListenerAdapter {
 					browser=params.getBrowser()==null?browser:params.getBrowser();
 					loadComplete(browser);
 				}
-			}, 3000);
+			}, getResponseDelay());
 		}
 	}
 
 	public void loadComplete(Browser browser){
-		try {
+		if(!loadComplete){
+			loadComplete=true;
 			if(browser!=null){
 				result = browser.getHTML();
 			}
-			synchronized (lock) {
-				lock.notifyAll();
+			try {
+				synchronized (lock) {
+					lock.notifyAll();
+				}
+			} catch (Exception ex) {
+				log.error(ex);
 			}
-		} catch (Exception ex) {
-			log.error(ex);
 		}
+	}
+
+	protected int getResponseDelay(){
+		return 3000;
 	}
 
 	@Override
