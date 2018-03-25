@@ -11,13 +11,13 @@ import com.teamdev.jxbrowser.chromium.BeforeURLRequestParams;
 import com.teamdev.jxbrowser.chromium.Cookie;
 import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 
-public class LoginShipxyPageHandler extends DefaultPageHandler {
+public class LoginShipxyPageHandler extends ListenerAdapter {
 
 	public static final String KEY_SESSION_ID = "ASP.NET_SessionId";
 	public static final String KEY_USER_AUTH = ".UserAuth2";
 	String sessionId = null;
 	String userAuth2 = null;
-
+	protected String result="";
 
 	public LoginShipxyPageHandler(int timeout) {
 		super(timeout);
