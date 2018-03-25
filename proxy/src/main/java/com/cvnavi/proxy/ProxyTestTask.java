@@ -18,7 +18,7 @@ import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.cvnavi.config.Config;
+import com.cvnavi.proxy.Config;
 
 /**
  * 验证代理是否有效。测试{@code TEST_RETRY}次，
