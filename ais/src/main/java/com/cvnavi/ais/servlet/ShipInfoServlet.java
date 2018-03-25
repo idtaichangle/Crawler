@@ -1,4 +1,4 @@
-package com.cvnavi.servlet;
+package com.cvnavi.ais.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
