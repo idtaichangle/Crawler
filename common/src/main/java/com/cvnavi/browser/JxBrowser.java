@@ -42,7 +42,6 @@ public class JxBrowser  {
 		JxbrowserCracker.crack();
 		browser = new Browser(browserContext);
 		BrowserPreferences preferences = browser.getPreferences();
-		preferences.setDefaultEncoding("UTF-8");
 		preferences.setImagesEnabled(false);
 		preferences.setAllowRunningInsecureContent(true);
 		browser.setPreferences(preferences);

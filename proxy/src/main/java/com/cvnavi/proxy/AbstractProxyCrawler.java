@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.cvnavi.db.dao.ProxyDaoService;
+import com.cvnavi.proxy.dao.ProxyDaoService;
 import com.cvnavi.proxy.html.ProxyExtracter;
 import com.cvnavi.task.AbstractDailyTask;
 import org.apache.http.HttpHost;

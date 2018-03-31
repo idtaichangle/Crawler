@@ -1,4 +1,10 @@
-package com.cvnavi.db.dao;
+package com.cvnavi.proxy.dao;
+
+import com.cvnavi.db.DBConnection;
+import com.cvnavi.proxy.ProxyProviderSource;
+import org.apache.http.HttpHost;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,14 +13,7 @@ import java.sql.Statement;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
-
-import com.cvnavi.db.DBConnection;
-import com.cvnavi.proxy.ProxyProviderSource;
-import org.apache.http.HttpHost;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * 将代理保存到数据库，或从数据库加载代理数据。

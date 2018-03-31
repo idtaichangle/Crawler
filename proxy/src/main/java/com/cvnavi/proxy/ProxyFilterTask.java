@@ -11,7 +11,7 @@ import org.apache.http.HttpHost;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.cvnavi.db.dao.ProxyDaoService;
+import com.cvnavi.proxy.dao.ProxyDaoService;
 
 /**
  * 先前验证过的代理，过一段时间后也可能失效。本类定时验证代理是否还有效。无效的代理要从alive_proxy表删除。

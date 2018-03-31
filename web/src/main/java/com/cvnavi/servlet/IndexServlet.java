@@ -1,9 +1,7 @@
 package com.cvnavi.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Collection;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,21 +9,38 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cvnavi.proxy.dao.ProxyDaoService;
+import org.apache.http.HttpHost;
+
+
 /**
  * Servlet implementation class IndexServlet
  */
 @WebServlet("/")
 public class IndexServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+       
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
-		out.println("<html>It's works!<br/>"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())+"</html>");
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Collection<HttpHost> all = ProxyDaoService.getInstance().loadAliveProxy();
+		StringBuilder sb=new StringBuilder();
+		sb.append("<!Doctype html><html><head><meta http-equiv=Content-Type content=\"text/html;charset=utf-8\"></head><body>");
+		sb.append("total count:"+all.size()).append("<br/>");
+		for(HttpHost host:all) {
+			sb.append(host.toHostString()).append("<br/>");
+		}
+		sb.append("</body></html>");
+		response.getWriter().append(sb.toString());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
 	}
 
 }

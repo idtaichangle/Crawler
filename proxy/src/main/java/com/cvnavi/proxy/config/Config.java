@@ -1,4 +1,4 @@
-package com.cvnavi.proxy;
+package com.cvnavi.proxy.config;
 
 import java.io.IOException;
 import java.io.InputStream;

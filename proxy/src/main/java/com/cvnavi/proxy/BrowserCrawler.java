@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 import javax.servlet.annotation.WebListener;
 
-import com.cvnavi.db.dao.ProxyDaoService;
+import com.cvnavi.proxy.dao.ProxyDaoService;
 import com.cvnavi.task.Schedule;
 import org.apache.http.HttpHost;
 
