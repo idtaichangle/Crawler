@@ -11,6 +11,9 @@ import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ *  提示网页里的代理ip和端口
+ */
 public class ProxyExtracter {
 
     protected static String IP_PATTERN = "(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])";
@@ -39,18 +42,9 @@ public class ProxyExtracter {
             }
             if(ip!=null && port!=null){
                 set.add(new  HttpHost(ip,Integer.parseInt(port)));
+                //System.out.println(new  HttpHost(ip,Integer.parseInt(port)));
             }
         }
         return  set;
-    }
-
-    public static void main(String[] args) {
-        try {
-            String s= new String(Files.readAllBytes(Paths.get("C:\\tmp\\test.html")));
-            extractProxy(s);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 }

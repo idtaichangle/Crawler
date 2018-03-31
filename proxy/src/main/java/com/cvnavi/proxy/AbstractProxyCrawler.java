@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.cvnavi.db.dao.ProxyDaoService;
+import com.cvnavi.proxy.html.ProxyExtracter;
 import com.cvnavi.task.AbstractDailyTask;
 import org.apache.http.HttpHost;
 import org.apache.logging.log4j.LogManager;
@@ -77,34 +78,8 @@ public abstract class AbstractProxyCrawler extends AbstractDailyTask {
 	}
 
 	public HashSet<HttpHost> doCrawl(String url) {
-		HashSet<HttpHost> set = new HashSet<>();
-
-		String s = getUrlContent(url);
-		String ip;
-		HttpHost proxy;
-
-		Matcher m1 = p1.matcher(s);
-
-		while (m1.find()) {
-			proxy = null;
-			ip = m1.group(0);
-			String sub = s.substring(m1.end());
-			Matcher m2 = p2.matcher(sub);
-			if (m2.find()) {
-				proxy = new HttpHost(ip, Integer.parseInt(m2.group(0)));
-			}
-			if (proxy != null) {
-				Date date = findDate(sub);
-
-				if (date != null && (date.getTime() - lastCrawl.getTime() > 0)) {
-					set.add(proxy);
-				} else {
-					set.add(proxy);
-				}
-			}
-		}
-
-		return set;
+		String s = getUrlContent(url);//html代码
+		return ProxyExtracter.extractProxy(s);
 	}
 
 	/**
