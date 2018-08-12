@@ -106,17 +106,17 @@
         <dependency>
             <groupId>com.teamdev</groupId>
             <artifactId>jxbrowser</artifactId>
-            <version>6.19.1</version>
+            <version>6.21</version>
         </dependency>
         <dependency>
             <groupId>com.teamdev</groupId>
             <artifactId>jxbrowser-linux64</artifactId>
-            <version>6.19.1</version>
+            <version>6.21</version>
         </dependency>
         <dependency>
             <groupId>com.teamdev</groupId>
-            <artifactId>jxbrowser-win32</artifactId>
-            <version>6.19.1</version>
+            <artifactId>jxbrowser-win64</artifactId>
+            <version>6.21</version>
         </dependency>
     </dependencies>
 </project>
