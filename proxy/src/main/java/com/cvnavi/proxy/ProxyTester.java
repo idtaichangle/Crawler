@@ -23,6 +23,7 @@ import com.cvnavi.proxy.ProxyTestTask.TestResult;
 public class ProxyTester {
 	static Logger log = LogManager.getLogger(ProxyTester.class);
 
+	static ThreadPoolExecutor pool;
 	/**
 	 * 验证代理是否有效。
 	 * 
@@ -47,7 +48,7 @@ public class ProxyTester {
 		}
 		List<TestResult> temp = new ArrayList<>();
 
-		ThreadPoolExecutor pool = new ThreadPoolExecutor(150, 200, 10L, TimeUnit.SECONDS,
+		pool = new ThreadPoolExecutor(150, 200, 10L, TimeUnit.SECONDS,
 				new LinkedBlockingQueue<Runnable>());
 		pool.allowCoreThreadTimeOut(true);
 
@@ -73,4 +74,7 @@ public class ProxyTester {
 		return result;
 	}
 
+	public static void interrupt(){
+		pool.shutdownNow();
+	}
 }

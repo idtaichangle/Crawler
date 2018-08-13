@@ -47,6 +47,6 @@ public class ProxyFilterTask extends AbstractDailyTask {
 
 	@Override
 	public void interruptTask() {
-
+		ProxyTester.interrupt();
 	}
 }
