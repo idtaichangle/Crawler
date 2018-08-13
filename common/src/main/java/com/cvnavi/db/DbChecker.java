@@ -46,20 +46,7 @@ public class DbChecker{
     }
 
     public static void closeDatabase(){
-        if(DBConnection.getInstance() instanceof MysqlConnection){
-            try {
-                AbandonedConnectionCleanupThread.shutdown();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }else
-        if(DBConnection.getInstance() instanceof DerbyConnection){
-            try {
-                DriverManager.getConnection(Config.dbUrl+";shutdown=true");
-            } catch (SQLException e) {
-                log.error(e);
-            }
-        }
+        DBConnection.getInstance().close();
     }
 
     private static boolean existTable(String name) throws Exception{

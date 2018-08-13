@@ -10,6 +10,7 @@ import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -31,14 +32,15 @@ import io.github.lukehutch.fastclasspathscanner.matchprocessor.SubclassMatchProc
  * @author lixy
  *
  */
-public class WebBackgroundTaskScheduler extends TimerTask {
+public class WebBackgroundTaskScheduler implements Runnable{
 
 	static Logger log=LogManager.getLogger(WebBackgroundTaskScheduler.class);
 	
 	static List<AbstractDailyTask> tasks;
 	public static long timerPeriod = 100;
-	protected Timer timer;
+//	protected Timer timer;
 	protected long tomorrow;// 明天零时00:00:00。在这个时刻，需要重新计算每个任务的当天排班。
+	protected static ScheduledExecutorService timer = (ScheduledExecutorService) Executors.newScheduledThreadPool(1);
 
 	protected static ThreadPoolExecutor scheduler = (ThreadPoolExecutor) Executors.newFixedThreadPool(20);
 	static {
@@ -61,16 +63,15 @@ public class WebBackgroundTaskScheduler extends TimerTask {
 	public void startScheduler() {
 		prepareTask();
 		calcTomorrow();
-		timer = new Timer("web-background-schedule-timer");
-		timer.schedule(this, 3000, timerPeriod);
+		timer.scheduleAtFixedRate(this,1000,timerPeriod,TimeUnit.MILLISECONDS);
 	}
 
 	public void stopScheduler(){
-		timer.cancel();
 		for (AbstractDailyTask task : tasks) {
 			task.setScheduleCancel(true);
 		}
 		scheduler.shutdownNow();
+		timer.shutdownNow();
 	}
 
 	@Override

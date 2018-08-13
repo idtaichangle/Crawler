@@ -2,13 +2,12 @@ package com.cvnavi.db;
 
 import com.cvnavi.config.Config;
 import com.cvnavi.web.WebContextCleanup;
+import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.Enumeration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,6 +42,23 @@ public class MysqlConnection extends DBConnection{
         }
 
         return con;
+    }
+
+    @Override
+    public void close() {
+        try {
+            AbandonedConnectionCleanupThread.shutdown();
+            Enumeration<Driver> drivers = DriverManager.getDrivers();
+            while (drivers.hasMoreElements()) {
+                Driver driver = drivers.nextElement();
+                DriverManager.deregisterDriver(driver);
+                log.info(String.format("deregistering jdbc driver: %s", driver));
+            }
+        } catch (InterruptedException e) {
+            log.error(e);
+        } catch (SQLException e) {
+            log.error(e);
+        }
     }
 
     private void createDatabase() throws SQLException {

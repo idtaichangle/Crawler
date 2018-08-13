@@ -7,7 +7,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Enumeration;
 
 public class DerbyConnection extends DBConnection {
 
@@ -31,5 +34,26 @@ public class DerbyConnection extends DBConnection {
         }
 
         return con;
+    }
+
+    @Override
+    public void close() {
+        try {
+            DriverManager.getConnection(Config.dbUrl+";shutdown=true");
+//            DriverManager.getConnection("jdbc:derby:;shutdown=true");
+        } catch (SQLException e) {
+            log.error(e);
+        }
+
+        try {
+            Enumeration<Driver> drivers = DriverManager.getDrivers();
+            while (drivers.hasMoreElements()) {
+                Driver driver = drivers.nextElement();
+                DriverManager.deregisterDriver(driver);
+                log.info(String.format("deregistering jdbc driver: %s", driver));
+            }
+        } catch (SQLException e) {
+            log.error(e);
+        }
     }
 }

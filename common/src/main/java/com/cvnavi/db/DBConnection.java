@@ -22,4 +22,6 @@ public abstract class DBConnection{
 
 	public abstract Connection get();
 
+	public abstract void close();
+
 }
