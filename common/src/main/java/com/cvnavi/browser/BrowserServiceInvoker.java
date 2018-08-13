@@ -30,7 +30,8 @@ public class BrowserServiceInvoker  extends AbstractDailyTask implements AutoClo
 	}
 
 	static boolean browserServiceRunning = false;
-	
+	static Socket socket = null;
+
 	@Override
 	public Schedule[] initSchedules() {
 		return  new Schedule[] { new Schedule("00:00:30", "00:00:31", 30000) };
@@ -39,7 +40,15 @@ public class BrowserServiceInvoker  extends AbstractDailyTask implements AutoClo
 	@Override
 	public void doTask() {
 	}
-	
+
+	@Override
+	public void interruptTask() {
+		try {
+			socket.close();
+		} catch (IOException e) {
+		}
+	}
+
 	@Override
 	protected void scheduleBeginEvent(Schedule s) {
 		//重启浏览器
@@ -78,7 +87,6 @@ public class BrowserServiceInvoker  extends AbstractDailyTask implements AutoClo
 			testOrStartServer();
 		}
 
-		Socket socket = null;
 		try {
 			socket = new Socket("127.0.0.1", BrowserService.port);
 			socket.setSoTimeout(60 * 1000);
@@ -255,5 +263,9 @@ public class BrowserServiceInvoker  extends AbstractDailyTask implements AutoClo
 		// s = sendCmd("cmd=" + BrowserService.CMD_LOGIN_MARINE_CIRCLE);
 //		s = loginMarinecircle();
 		System.out.println(s);
+	}
+
+	public static Socket getSocket() {
+		return socket;
 	}
 }

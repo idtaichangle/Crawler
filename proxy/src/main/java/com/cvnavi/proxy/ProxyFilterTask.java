@@ -44,4 +44,9 @@ public class ProxyFilterTask extends AbstractDailyTask {
 			log.error(ex);
 		}
 	}
+
+	@Override
+	public void interruptTask() {
+
+	}
 }

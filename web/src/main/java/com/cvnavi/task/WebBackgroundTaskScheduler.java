@@ -69,6 +69,7 @@ public class WebBackgroundTaskScheduler implements Runnable{
 	public void stopScheduler(){
 		for (AbstractDailyTask task : tasks) {
 			task.setScheduleCancel(true);
+			task.interruptTask();
 		}
 		scheduler.shutdownNow();
 		timer.shutdownNow();

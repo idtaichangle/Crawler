@@ -108,7 +108,12 @@ public class ShipxyHeartbeat extends AbstractDailyTask {
 			log.error(ex);
 		}
 	}
-	
+
+	@Override
+	public void interruptTask() {
+
+	}
+
 	public static String getSessionId(){
 		return sessionId;
 	}

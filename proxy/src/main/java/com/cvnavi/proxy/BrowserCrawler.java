@@ -1,5 +1,7 @@
 package com.cvnavi.proxy;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.regex.Matcher;
@@ -34,6 +36,17 @@ public class BrowserCrawler extends AbstractProxyCrawler {
 	@Override
 	public Schedule[] initSchedules() {
 		return emptySchedules;
+	}
+
+	@Override
+	public void interruptTask() {
+		Socket socket=BrowserServiceInvoker.getSocket();
+		if(socket!=null){
+			try {
+				socket.close();
+			} catch (IOException e) {
+			}
+		}
 	}
 
 	public String getUrlContent(String url) {

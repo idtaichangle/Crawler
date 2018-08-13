@@ -130,6 +130,8 @@ public abstract class AbstractDailyTask implements Runnable {
 	
 	public abstract void doTask();
 
+	public abstract void interruptTask();
+
 	public void setScheduleCancel(boolean b) {
 		this.scheduleCancel = b;
 	}

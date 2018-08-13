@@ -46,6 +46,11 @@ public class HttpClientCrawler extends AbstractProxyCrawler {
 		return emptySchedules;
 	}
 
+	@Override
+	public void interruptTask() {
+
+	}
+
 	public String getUrlContent(String url) {
 		HashMap<String, String> header = Header.createRandom();
 		header.put("Upgrade-Insecure-Requests", "1");
