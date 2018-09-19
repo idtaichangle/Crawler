@@ -14,6 +14,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -32,14 +34,15 @@ public class ShenZhenTongTask extends AbstractDailyTask {
         return emptySchedules;
     }
 
-    int cardnum=330312859;
+    int cardnum=330314530;
     public void doTask() {
         cardnum+=1;
         log.info("cardnum:"+cardnum);
         String url="https://www.shenzhentong.com/service/fplist_101007009_"+cardnum+"_20180915.html";
         String s=HttpUtil.doHttpGet(url);//,null,null,HttpUtil.RANDOM_PROXY);
-        if(s.contains("充值金额") && !s.contains("class=\"listtable\" style=\"display:none;\"")){
-            log.error(s);
+        Element ele=Jsoup.parse(s).selectFirst(".listtable");
+
+        if(ele.select("tr").size()>1){
             try {
                 List<String> list= Files.readAllLines(Paths.get("E:\\szt.log"));
                 list.add(cardnum+"");
