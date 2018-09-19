@@ -53,5 +53,10 @@
 			<artifactId>proxy</artifactId>
 			<version>1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.cvnavi.crawler</groupId>
+			<artifactId>ocr</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 </project>
