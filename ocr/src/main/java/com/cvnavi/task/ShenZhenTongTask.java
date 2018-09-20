@@ -21,22 +21,41 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ShenZhenTongTask extends AbstractDailyTask {
 
     static Logger log = LogManager.getLogger(ShenZhenTongTask.class);
 
+    public ShenZhenTongTask(){
+
+        InputStream is= getClass().getResourceAsStream("/ocr.properties");
+        Properties p=new Properties();
+        try {
+            p.load(is);
+            cardnum=Integer.parseInt(p.getProperty("cardnum"));
+            is.close();
+        } catch (IOException e) {
+            log.error(e);
+        }
+
+    }
+
     public Schedule[] initSchedules() {
         return emptySchedules;
     }
 
-    int cardnum=330314530;
+    int cardnum=330320000;
+
     public void doTask() {
         cardnum+=1;
+
         log.info("cardnum:"+cardnum);
         String url="https://www.shenzhentong.com/service/fplist_101007009_"+cardnum+"_20180915.html";
         String s=HttpUtil.doHttpGet(url);//,null,null,HttpUtil.RANDOM_PROXY);
