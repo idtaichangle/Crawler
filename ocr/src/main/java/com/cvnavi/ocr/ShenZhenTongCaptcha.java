@@ -5,6 +5,7 @@ import net.sourceforge.tess4j.ITessAPI;
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
+import net.sourceforge.tess4j.util.LoadLibs;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -22,12 +23,13 @@ public class ShenZhenTongCaptcha {
 //        ImageIO.write(optimized,"png", new File("E:\\1.png"));
 
         ITesseract te=new Tesseract();
-        try {
-            te.setLanguage("eng");
-            te.setDatapath("E:\\data");
-            te.setTessVariable("tessedit_char_whitelist", "0123456789");
-            te.setPageSegMode(ITessAPI.TessPageSegMode.PSM_SINGLE_LINE);
+        File tessDataFolder = LoadLibs.extractTessResources("tessdata");
+        te.setDatapath(tessDataFolder.getAbsolutePath());
+        te.setLanguage("eng");
+        te.setTessVariable("tessedit_char_whitelist", "0123456789");
+        te.setPageSegMode(ITessAPI.TessPageSegMode.PSM_SINGLE_LINE);
 
+        try {
             String s=te.doOCR(optimized);
             return  s;
         } catch (TesseractException e) {
@@ -116,6 +118,7 @@ public class ShenZhenTongCaptcha {
     }
 
     public static void main(String[] args) throws IOException {
-        System.out.println(doOcr(new File("E:\\1.gif")));
+        LoadLibs.getTesseractLibName();
+        System.out.println(doOcr(new File("C:\\tmp\\1.gif")));
     }
 }
