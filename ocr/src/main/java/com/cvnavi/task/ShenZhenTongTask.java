@@ -72,7 +72,7 @@ public class ShenZhenTongTask extends AbstractDailyTask {
 
     private void nextDay(){
         c.add(Calendar.DAY_OF_MONTH,1);
-        if(System.currentTimeMillis()-c.getTimeInMillis()<7*24*3600*1000){
+        if(System.currentTimeMillis()-c.getTimeInMillis()<50*24*3600*1000){
             cardnum+=1;
             c=Calendar.getInstance();
             c.add(Calendar.DAY_OF_MONTH,-80);
@@ -91,7 +91,7 @@ public class ShenZhenTongTask extends AbstractDailyTask {
             }
         }
         String url="https://www.shenzhentong.com/service/fplist_101007009_"+cardnum+"_"+date+".html";
-        String s=HttpUtil.doHttpGet(url,null,cookies,null);
+        String s=HttpUtil.doHttpGet(url,null,cookies,HttpUtil.RANDOM_PROXY);
         Element ele=Jsoup.parse(s).selectFirst(".listtable");
 
         if(ele.select("tr").size()>1){
