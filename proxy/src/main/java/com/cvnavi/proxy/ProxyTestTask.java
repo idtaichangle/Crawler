@@ -11,6 +11,7 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.config.SocketConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -39,6 +40,8 @@ public class ProxyTestTask implements Runnable {
 	static PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
 	static CloseableHttpClient httpclient = HttpClients.custom().setConnectionManager(cm).build();
 	static{
+		SocketConfig socketConfig=SocketConfig.custom().setSoTimeout(50000).build();
+		cm.setDefaultSocketConfig(socketConfig);
 		WebContextCleanup.registeCloseable(httpclient);
 	}
 
@@ -92,6 +95,7 @@ public class ProxyTestTask implements Runnable {
 		String result = "";
 		HttpClientContext context = HttpClientContext.create();
 		RequestConfig.Builder configBuilder = RequestConfig.custom();
+		configBuilder.setConnectionRequestTimeout(800);
 		configBuilder.setConnectTimeout(800);
 		configBuilder.setSocketTimeout(800);
 		configBuilder.setProxy(proxy);
