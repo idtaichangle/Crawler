@@ -72,7 +72,8 @@ public class ShenZhenTongTask extends AbstractDailyTask {
 
     private void nextDay(){
         c.add(Calendar.DAY_OF_MONTH,1);
-        if(System.currentTimeMillis()-c.getTimeInMillis()<50*24*3600*1000){
+        long lo=24L*3600*1000*50;//查询50天前的订单
+        if(System.currentTimeMillis()-c.getTimeInMillis()<lo){
             cardnum+=1;
             c=Calendar.getInstance();
             c.add(Calendar.DAY_OF_MONTH,-80);
@@ -94,14 +95,18 @@ public class ShenZhenTongTask extends AbstractDailyTask {
         String s=HttpUtil.doHttpGet(url,null,cookies,HttpUtil.RANDOM_PROXY);
         Element ele=Jsoup.parse(s).selectFirst(".listtable");
 
-        if(ele.select("tr").size()>1){
-            Element  amount=ele.select("tr").get(1).selectFirst(".tdtjamt");
-            try {
-                String line=cardnum+","+date+","+amount.text()+"\r\n";
-                FileUtils.write(new File(resultFile),line,"UTF-8",true);
-            } catch (IOException e) {
-                log.error(e);
+        if(ele!=null){
+            if(ele.select("tr").size()>1){
+                Element  amount=ele.select("tr").get(1).selectFirst(".tdtjamt");
+                try {
+                    String line=cardnum+","+date+","+amount.text()+"\r\n";
+                    FileUtils.write(new File(resultFile),line,"UTF-8",true);
+                } catch (IOException e) {
+                    log.error(e);
+                }
             }
+        }else{
+            c.add(Calendar.DAY_OF_MONTH,-1);
         }
     }
 

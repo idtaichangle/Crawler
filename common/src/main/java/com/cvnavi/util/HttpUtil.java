@@ -30,6 +30,7 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
+import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
@@ -72,8 +73,10 @@ public class HttpUtil {
 		Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
 				.register("https", socketFactory).register("http", new PlainConnectionSocketFactory()).build();
 
+		SocketConfig socketConfig=SocketConfig.custom().setSoTimeout(30000).build();
 		PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(
 				socketFactoryRegistry);
+		connectionManager.setDefaultSocketConfig(socketConfig);
 		connectionManager.setMaxTotal(200);
 		connectionManager.setDefaultMaxPerRoute(20);
 
@@ -280,6 +283,7 @@ public class HttpUtil {
 
 		HttpClientContext context = HttpClientContext.create();
 		RequestConfig.Builder configBuilder = RequestConfig.custom();
+		configBuilder.setConnectionRequestTimeout(timeout);
 		configBuilder.setConnectTimeout(timeout);
 		configBuilder.setSocketTimeout(timeout);
 		if(proxy!=null){
